@@ -1,0 +1,20 @@
+{
+  "name": "odder/env",
+  "description": "Odder's .ENV implementation",
+  "keywords": ["env", "dotenv", "environment"],
+  "license" : "GPL-3",
+  "authors" : [
+    {
+      "name": "Oscar Roth Andersen",
+      "email": "oscarrothandersen@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ENV\\": "src/"
+    }
+  }
+}
