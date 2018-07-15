@@ -81,25 +81,29 @@ class Loader
     /**
      * @param $key
      * @param $value
+     * @param bool $sanitise
      */
-    protected function setVariable($key, $value)
+    protected function setVariable($key, $value, $sanitise=True)
     {
         if (!preg_match('/^[A-Z][A-Z0-9_]+$/', $key)) {
             throw new InvalidKeyException("'${key}' is not a a proper key format.");
         }
 
-        $this->variables[$key] = $this->sanitiseValue($value);
+        $value = $sanitise ? $this->sanitiseValue($value) : $value;
+        $this->variables[$key] = $value;
     }
 
     /**
      * @param $value
      * @return mixed|null|string|string[]
      */
-    protected function sanitiseValue($value)
+    protected function sanitiseValue($value): string
     {
+        $value = trim($value);
+        print_r($value[0]);
         if (isset($value[0]) && $value[0] == '\'' || $value[0] == '"') {
             $quote = $value[0];
-
+            print_r(1);
             $pattern = "/^${quote}((?:[^${quote}\\\\]*|\\\\\\\\|\\\\${quote})*)${quote}.*$/mx";
             $value = preg_replace($pattern, '$1', $value);
             $value = str_replace("\\${quote}", $quote, $value);
@@ -109,8 +113,9 @@ class Loader
             $value = explode(' #', $value, 2)[0];
             $value = $value[0] !== '#' ? $value : '';
 
+            print_r(2);
             if (preg_match('/\s/', $value) > 0 ) {
-                throw new InvalidFileException('.env file requires you to put strings with spaces in quotes');
+                throw new InvalidFileException('.env file requires you to put strings with spaces in quotes on value: ' . $value);
             }
         }
 
@@ -157,7 +162,7 @@ class Loader
             );
 
             $variables[$key] = $value;
-            $this->setVariable($key, $value);
+            $this->setVariable($key, $value, False);
         }
     }
 

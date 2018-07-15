@@ -9,12 +9,16 @@
       "email": "oscarrothandersen@gmail.com"
     }
   ],
-  "require": {
-    "php": ">=7.0.0"
+  "require-dev": {
+    "php": ">=7.0.0",
+    "phpunit/phpunit": "^7.2"
   },
   "autoload": {
     "psr-4": {
       "ENV\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/"
+    ]
   }
 }
